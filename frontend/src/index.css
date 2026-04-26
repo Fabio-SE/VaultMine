@@ -2,33 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-  --bg:     #0d1117;
-  --panel:  #111827;
-  --border: #1e2d40;
-  --cyan:   #00d4ff;
-  --green:  #00ff88;
-  --yellow: #ffd700;
-  --red:    #ff4444;
+  /* Paleta Zolo */
+  --bg:          #0f1318;
+  --bg-deep:     #080b10;
+  --panel:       #13171e;
+  --panel-2:     #1a1e26;
+  --border:      #252c38;
+  --border-2:    #2a3040;
+
+  /* Cores de destaque */
+  --gold:        #8C7549;
+  --gold-dark:   #594A2D;
+  --slate:       #313640;
+  --slate-light: #D9D9D9;
+
+  /* Status */
+  --green:       #7ab87a;
+  --red:         #c07070;
+  --yellow:      #c8a84a;
+  --blue:        #6a8ab8;
+
+  /* Texto */
+  --text:        #c8d0da;
+  --text-muted:  #5a6070;
+  --text-faint:  #3a4050;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html { height: 100%; }
+
 body {
   background: var(--bg);
-  color: #e0e6f0;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--text);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
   min-height: 100vh;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
+#root { height: 100%; }
+
 /* Scrollbar */
-::-webkit-scrollbar       { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #2a3a50; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+
+/* Selection */
+::selection { background: #594A2D44; color: var(--gold); }
+
+/* Input focus ring override */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+}
+
+/* Spin animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Pulse animation for live indicators */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
 
 /* Log colors */
 .log-ok    { color: var(--green); }
 .log-warn  { color: var(--yellow); }
 .log-error { color: var(--red); }
-.log-info  { color: var(--cyan); }
+.log-info  { color: var(--gold); }
