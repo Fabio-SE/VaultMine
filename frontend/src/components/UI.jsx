@@ -1,89 +1,127 @@
-/* ─────────────────────────────────────────────────────────────
-   UI.jsx — Componentes VAULT  •  Paleta Zolo
-   ───────────────────────────────────────────────────────────── */
 import { useRef, useEffect } from 'react'
 
-/* ── Logo SVG ─────────────────────────────────────────────── */
-export function VaultLogo({ size = 32 }) {
+/* ── VaultLogo ────────────────────────────────────────────── */
+export function VaultLogo({ size = 36 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <rect width="32" height="32" rx="7" fill="url(#lg)" />
-      <path d="M8 10 L16 6 L24 10 L24 22 L16 26 L8 22 Z"
-        fill="none" stroke="#8C7549" strokeWidth="1.2" strokeLinejoin="round" />
-      <path d="M8 10 L16 14 L24 10" fill="none" stroke="#8C7549" strokeWidth="1.2" strokeLinejoin="round" />
-      <path d="M16 14 L16 26" fill="none" stroke="#594A2D" strokeWidth="1.2" />
-      <path d="M13 16 L19 16" fill="none" stroke="#8C7549" strokeWidth="0.8" strokeLinecap="round" />
-      <path d="M13 19 L19 19" fill="none" stroke="#594A2D" strokeWidth="0.8" strokeLinecap="round" />
-      <defs>
-        <linearGradient id="lg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#1e1b14" />
-          <stop offset="100%" stopColor="#0b0e13" />
-        </linearGradient>
-      </defs>
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
+      <rect width="40" height="40" rx="10" fill="var(--gold-faint)" />
+      <path d="M10 14 L20 8 L30 14 L30 26 L20 32 L10 26 Z"
+        fill="none" stroke="var(--gold)" strokeWidth="1.5" strokeLinejoin="round"/>
+      <path d="M10 14 L20 20 L30 14"
+        fill="none" stroke="var(--gold)" strokeWidth="1.5" strokeLinejoin="round"/>
+      <path d="M20 20 L20 32"
+        fill="none" stroke="var(--gold-dim)" strokeWidth="1.5"/>
+      <path d="M16 22 L24 22"
+        fill="none" stroke="var(--gold)" strokeWidth="1" strokeLinecap="round"/>
+      <path d="M16 25.5 L24 25.5"
+        fill="none" stroke="var(--gold-dim)" strokeWidth="1" strokeLinecap="round"/>
     </svg>
   )
 }
 
-/* ── Page wrapper com fade-in ────────────────────────────── */
+/* ── ThemeToggle ──────────────────────────────────────────── */
+export function ThemeToggle({ theme, setTheme }) {
+  const dark = theme === 'dark'
+  return (
+    <button
+      onClick={() => setTheme(dark ? 'light' : 'dark')}
+      title={dark ? 'Modo claro' : 'Modo escuro'}
+      style={{
+        position: 'relative',
+        width: 52, height: 28, borderRadius: 14,
+        background: dark
+          ? 'linear-gradient(135deg, #2a3140, #1C2026)'
+          : 'linear-gradient(135deg, #e8d8b8, #d4c4a0)',
+        border: `1.5px solid ${dark ? 'var(--gold-dim)' : 'var(--gold)'}`,
+        cursor: 'pointer', padding: 0, transition: 'all 0.4s var(--ease)',
+        flexShrink: 0,
+      }}
+    >
+      {/* track glow */}
+      <span style={{
+        position: 'absolute', inset: 0, borderRadius: 14,
+        background: dark
+          ? 'radial-gradient(circle at 30% 50%, #c4a26520, transparent 70%)'
+          : 'radial-gradient(circle at 70% 50%, #c4a26540, transparent 70%)',
+        transition: 'all 0.4s',
+      }} />
+      {/* thumb */}
+      <span style={{
+        position: 'absolute', top: 3,
+        left: dark ? 3 : 25,
+        width: 20, height: 20, borderRadius: '50%',
+        background: dark
+          ? 'radial-gradient(circle at 35% 35%, #d4b87a, #8a6e42)'
+          : 'radial-gradient(circle at 35% 35%, #fff8e8, #e8cc88)',
+        boxShadow: dark ? '0 1px 4px #00000060' : '0 1px 6px #c4a26560',
+        transition: 'left 0.35s var(--ease)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 11,
+      }}>
+        {dark ? '🌙' : '☀️'}
+      </span>
+    </button>
+  )
+}
+
+/* ── PageWrap ─────────────────────────────────────────────── */
 export function PageWrap({ children }) {
   return (
     <div style={{
-      padding: '32px 36px',
-      animation: 'fadeIn 0.25s var(--ease, ease) both',
+      padding: '36px 40px',
+      animation: 'fadeSlideUp 0.22s var(--ease) both',
     }}>
       {children}
     </div>
   )
 }
 
-/* ── SectionHeader ───────────────────────────────────────── */
+/* ── SectionHeader ────────────────────────────────────────── */
 export function SectionHeader({ icon, title, description, action }) {
   return (
     <div style={{
       display: 'flex', alignItems: 'flex-start',
-      justifyContent: 'space-between', marginBottom: 28,
+      justifyContent: 'space-between', marginBottom: 28, gap: 16,
     }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
         <div style={{
-          width: 38, height: 38, borderRadius: 8, flexShrink: 0,
-          background: 'linear-gradient(135deg, #1e1b14, #13100c)',
-          border: '1px solid #594A2D55',
+          width: 42, height: 42, borderRadius: 10, flexShrink: 0,
+          background: 'var(--gold-faint)',
+          border: '1px solid var(--gold-dim)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 17,
+          fontSize: 19,
         }}>
           {icon}
         </div>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 3 }}>
-            <span style={{
-              color: '#D9D9D9', fontSize: 16, fontWeight: 700, letterSpacing: 2,
-            }}>
-              {title.toUpperCase()}
-            </span>
+          <div style={{
+            fontFamily: 'var(--font-disp)', color: 'var(--text)',
+            fontSize: 22, fontWeight: 800, letterSpacing: 1, lineHeight: 1.1,
+            marginBottom: 4,
+          }}>
+            {title}
           </div>
           {description && (
-            <div style={{ color: '#3a4252', fontSize: 11, letterSpacing: 0.3 }}>
+            <div style={{ color: 'var(--text3)', fontSize: 12 }}>
               {description}
             </div>
           )}
         </div>
       </div>
-      {action && <div>{action}</div>}
+      {action && <div style={{ flexShrink: 0 }}>{action}</div>}
     </div>
   )
 }
 
-/* ── Card ────────────────────────────────────────────────── */
-export function Card({ children, style = {}, accent = false }) {
+/* ── Card ─────────────────────────────────────────────────── */
+export function Card({ children, style = {}, accent, noPad = false }) {
   return (
     <div style={{
-      background: '#10141a',
-      border: `1px solid ${accent ? '#594A2D66' : '#1f2a38'}`,
-      borderRadius: 10,
-      padding: '20px 22px',
-      position: 'relative',
-      overflow: 'hidden',
-      ...(accent && { borderLeft: '3px solid #594A2D' }),
+      background: 'var(--surface)',
+      border: `1px solid ${accent ? 'var(--gold-dim)' : 'var(--border)'}`,
+      borderRadius: 'var(--radius-lg)',
+      padding: noPad ? 0 : '20px 22px',
+      ...(accent && { borderLeft: '3px solid var(--gold)' }),
       ...style,
     }}>
       {children}
@@ -91,111 +129,92 @@ export function Card({ children, style = {}, accent = false }) {
   )
 }
 
-/* ── Btn ─────────────────────────────────────────────────── */
-const BTN_VARIANTS = {
-  primary: { bg: '#1c1810', border: '#8C754966', color: '#8C7549', hBg: '#252015', hBorder: '#8C7549aa' },
-  success: { bg: '#0d1a10', border: '#5a9e6f44', color: '#5a9e6f', hBg: '#111f14', hBorder: '#5a9e6f88' },
-  danger:  { bg: '#180d0d', border: '#9e5a5a44', color: '#9e5a5a', hBg: '#1f1111', hBorder: '#9e5a5a88' },
-  ghost:   { bg: 'transparent', border: '#1f2a38', color: '#505a68', hBg: '#151a22', hBorder: '#273344' },
-  solid:   { bg: 'linear-gradient(135deg,#594A2D,#8C7549)', border: 'transparent', color: '#D9D9D9', hBg: '#8C7549', hBorder: 'transparent' },
-}
-
+/* ── Btn ──────────────────────────────────────────────────── */
 export function Btn({ children, onClick, variant = 'primary', disabled = false, style = {}, size = 'md' }) {
-  const c = BTN_VARIANTS[variant] || BTN_VARIANTS.primary
-  const pad = size === 'sm' ? '5px 11px' : size === 'lg' ? '11px 24px' : '8px 16px'
-  const fs  = size === 'sm' ? 10 : size === 'lg' ? 13 : 11
-
+  const pad   = size === 'sm' ? '5px 12px' : size === 'lg' ? '11px 22px' : '8px 16px'
+  const fs    = size === 'sm' ? 11 : size === 'lg' ? 13 : 12
+  const vars  = {
+    primary: { bg:'var(--gold-bg)', b:'var(--gold-dim)', c:'var(--gold-hi)', hBg:'var(--gold-faint)', hB:'var(--gold)' },
+    success: { bg:'var(--green-bg)', b:'var(--green-b)', c:'var(--green)', hBg:'var(--green-bg)', hB:'var(--green)' },
+    danger:  { bg:'var(--red-bg)',   b:'var(--red-b)',   c:'var(--red)',   hBg:'var(--red-bg)',   hB:'var(--red)'   },
+    ghost:   { bg:'transparent',    b:'var(--border)',  c:'var(--text2)', hBg:'var(--bg3)',      hB:'var(--border2)'},
+    blue:    { bg:'var(--blue-bg)', b:'var(--blue-b)',  c:'var(--blue)', hBg:'var(--blue-bg)',  hB:'var(--blue)'  },
+  }
+  const v = vars[variant] || vars.primary
   return (
     <button
-      onClick={onClick}
-      disabled={disabled}
+      onClick={onClick} disabled={disabled}
       style={{
-        padding: pad, borderRadius: 7, cursor: disabled ? 'not-allowed' : 'pointer',
-        background: c.bg, border: `1px solid ${c.border}`, color: c.color,
-        fontSize: fs, fontFamily: 'inherit', opacity: disabled ? 0.3 : 1,
-        transition: 'all 0.15s', letterSpacing: 0.5, fontWeight: 500,
-        display: 'inline-flex', alignItems: 'center', gap: 6,
-        whiteSpace: 'nowrap',
+        padding: pad, borderRadius: 'var(--radius)',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        background: v.bg, border: `1px solid ${v.b}`, color: v.c,
+        fontSize: fs, opacity: disabled ? 0.35 : 1,
+        transition: 'all 0.15s var(--ease)', letterSpacing: 0.3, fontWeight: 500,
+        display: 'inline-flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap',
         ...style,
       }}
-      onMouseEnter={e => {
-        if (!disabled) {
-          e.currentTarget.style.background = c.hBg
-          e.currentTarget.style.borderColor = c.hBorder
-        }
-      }}
-      onMouseLeave={e => {
-        if (!disabled) {
-          e.currentTarget.style.background = c.bg
-          e.currentTarget.style.borderColor = c.border
-        }
-      }}
+      onMouseEnter={e => { if (!disabled) { e.currentTarget.style.background = v.hBg; e.currentTarget.style.borderColor = v.hB } }}
+      onMouseLeave={e => { if (!disabled) { e.currentTarget.style.background = v.bg;  e.currentTarget.style.borderColor = v.b  } }}
     >
       {children}
     </button>
   )
 }
 
-/* ── Label ───────────────────────────────────────────────── */
+/* ── FieldLabel ───────────────────────────────────────────── */
 function FieldLabel({ children }) {
   return (
     <div style={{
-      color: '#594A2D', fontSize: 9, letterSpacing: 2,
-      fontWeight: 700, marginBottom: 5, textTransform: 'uppercase',
+      color: 'var(--gold-dim)', fontSize: 10, letterSpacing: 1.5,
+      fontWeight: 700, marginBottom: 6, textTransform: 'uppercase',
     }}>
       {children}
     </div>
   )
 }
 
-/* ── Input ───────────────────────────────────────────────── */
-export function Input({ label, value, onChange, placeholder, type = 'text', style = {}, mono = true }) {
+/* ── Input ────────────────────────────────────────────────── */
+export function Input({ label, value, onChange, placeholder, type = 'text', style = {} }) {
   return (
-    <div style={{ marginBottom: 14, ...style }}>
+    <div style={{ marginBottom: 16, ...style }}>
       {label && <FieldLabel>{label}</FieldLabel>}
       <input
-        type={type}
-        value={value}
+        type={type} value={value}
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
         style={{
-          width: '100%', background: '#0b0e13',
-          border: '1px solid #1f2a38',
-          color: '#b0bac8', padding: '9px 12px', borderRadius: 7,
-          fontSize: 12, fontFamily: mono ? 'inherit' : 'inherit',
-          transition: 'border-color 0.15s',
+          width: '100%', background: 'var(--bg)',
+          border: '1px solid var(--border)',
+          color: 'var(--text)', padding: '9px 13px', borderRadius: 'var(--radius)',
+          fontSize: 12, fontFamily: 'inherit', transition: 'border-color 0.15s',
         }}
-        onFocus={e => { e.target.style.borderColor = '#594A2D' }}
-        onBlur={e => { e.target.style.borderColor = '#1f2a38' }}
+        onFocus={e => e.target.style.borderColor = 'var(--gold-dim)'}
+        onBlur={e  => e.target.style.borderColor = 'var(--border)'}
       />
     </div>
   )
 }
 
-/* ── Select ──────────────────────────────────────────────── */
+/* ── Select ───────────────────────────────────────────────── */
 export function Select({ label, value, onChange, options = [], style = {} }) {
   return (
-    <div style={{ marginBottom: 14, ...style }}>
+    <div style={{ marginBottom: 16, ...style }}>
       {label && <FieldLabel>{label}</FieldLabel>}
       <select
-        value={value}
-        onChange={e => onChange(e.target.value)}
+        value={value} onChange={e => onChange(e.target.value)}
         style={{
-          width: '100%', background: '#0b0e13',
-          border: '1px solid #1f2a38',
-          color: '#b0bac8', padding: '9px 12px', borderRadius: 7,
+          width: '100%', background: 'var(--bg)',
+          border: '1px solid var(--border)',
+          color: 'var(--text)', padding: '9px 13px', borderRadius: 'var(--radius)',
           fontSize: 12, fontFamily: 'inherit', cursor: 'pointer',
         }}
-        onFocus={e => { e.target.style.borderColor = '#594A2D' }}
-        onBlur={e => { e.target.style.borderColor = '#1f2a38' }}
+        onFocus={e => e.target.style.borderColor = 'var(--gold-dim)'}
+        onBlur={e  => e.target.style.borderColor = 'var(--border)'}
       >
         {options.map(o => (
-          <option
-            key={typeof o === 'string' ? o : o.value}
-            value={typeof o === 'string' ? o : o.value}
-            style={{ background: '#10141a' }}
-          >
-            {typeof o === 'string' ? o : o.label}
+          <option key={typeof o==='string'?o:o.value} value={typeof o==='string'?o:o.value}
+            style={{ background: 'var(--bg)' }}>
+            {typeof o==='string' ? o : o.label}
           </option>
         ))}
       </select>
@@ -203,138 +222,117 @@ export function Select({ label, value, onChange, options = [], style = {} }) {
   )
 }
 
-/* ── LogBox ──────────────────────────────────────────────── */
+/* ── LogBox ───────────────────────────────────────────────── */
 export function LogBox({ lines = [], maxHeight = 360 }) {
   const ref = useRef(null)
-  useEffect(() => {
-    if (ref.current) ref.current.scrollTop = ref.current.scrollHeight
-  }, [lines])
+  useEffect(() => { if (ref.current) ref.current.scrollTop = ref.current.scrollHeight }, [lines])
 
-  function color(line) {
-    if (/error|erro|exception|fatal/i.test(line)) return '#9e5a5a'
-    if (/warn|aviso/i.test(line)) return '#9e8a4a'
-    if (/\[info\]/i.test(line)) return '#7a8a9e'
-    if (/\[log\]|done|✓|succes/i.test(line)) return '#5a9e6f'
-    return '#3a4555'
+  const c = l => {
+    if (/error|erro|exception|fatal/i.test(l)) return 'var(--red)'
+    if (/warn|aviso/i.test(l))                 return 'var(--amber)'
+    if (/\[info\]/i.test(l))                   return 'var(--blue)'
+    if (/\[log\]|done|✓|succes/i.test(l))      return 'var(--green)'
+    return 'var(--text3)'
   }
 
   return (
-    <div
-      ref={ref}
-      style={{
-        background: '#080b10',
-        border: '1px solid #161c25',
-        borderLeft: '2px solid #594A2D44',
-        borderRadius: 8,
-        padding: '12px 14px', maxHeight, overflowY: 'auto',
-        fontSize: 11, lineHeight: 1.9, position: 'relative',
-      }}
-    >
+    <div ref={ref} style={{
+      background: 'var(--bg)', border: '1px solid var(--border)',
+      borderLeft: '3px solid var(--gold-dim)',
+      borderRadius: 'var(--radius)', padding: '13px 15px',
+      maxHeight, overflowY: 'auto', fontSize: 11, lineHeight: 1.9,
+    }}>
       {lines.length === 0
-        ? <span style={{ color: '#1f2a38' }}>// awaiting output...</span>
+        ? <span style={{ color: 'var(--text4)', fontStyle: 'italic' }}>// awaiting output...</span>
         : lines.map((l, i) => (
-            <div key={i} style={{ color: color(l), whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-              {l}
-            </div>
+            <div key={i} style={{ color: c(l), whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{l}</div>
           ))
       }
     </div>
   )
 }
 
-/* ── Badge ───────────────────────────────────────────────── */
-export function Badge({ children, color = '#8C7549', dot = false }) {
+/* ── Badge ────────────────────────────────────────────────── */
+export function Badge({ children, color, dot = false }) {
+  const col = color || 'var(--gold)'
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', gap: 5,
-      padding: '2px 8px', borderRadius: 20,
-      border: `1px solid ${color}33`,
-      color, background: color + '12',
-      fontSize: 10, letterSpacing: 0.5, fontWeight: 600,
+      padding: '2px 9px', borderRadius: 20,
+      background: col + '18', border: `1px solid ${col}44`,
+      color: col, fontSize: 10, fontWeight: 600, letterSpacing: 0.4,
     }}>
-      {dot && (
-        <span style={{
-          width: 5, height: 5, borderRadius: '50%',
-          background: color, animation: 'pulse 2s infinite',
-          flexShrink: 0,
-        }} />
-      )}
+      {dot && <span style={{ width:5,height:5,borderRadius:'50%',background:col,animation:'pulse 2s infinite',flexShrink:0 }} />}
       {children}
     </span>
   )
 }
 
-/* ── Grid ────────────────────────────────────────────────── */
+/* ── Grid ─────────────────────────────────────────────────── */
 export function Grid({ children, cols = 2, gap = 16 }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap }}>
+    <div style={{ display:'grid', gridTemplateColumns:`repeat(${cols},1fr)`, gap }}>
       {children}
     </div>
   )
 }
 
-/* ── Spinner ─────────────────────────────────────────────── */
-export function Spinner({ size = 13 }) {
+/* ── Spinner ──────────────────────────────────────────────── */
+export function Spinner() {
   return (
     <span style={{
-      display: 'inline-block', width: size, height: size,
-      border: `1.5px solid #1f2a38`, borderTopColor: '#8C7549',
-      borderRadius: '50%', animation: 'spin 0.7s linear infinite',
-      verticalAlign: 'middle', flexShrink: 0,
+      display:'inline-block', width:13, height:13,
+      border:'1.5px solid var(--border2)', borderTopColor:'var(--gold)',
+      borderRadius:'50%', animation:'spin 0.7s linear infinite', flexShrink:0,
     }} />
   )
 }
 
-/* ── Divider ─────────────────────────────────────────────── */
-export function Divider({ label, style = {} }) {
+/* ── Divider ──────────────────────────────────────────────── */
+export function Divider({ label, style: s = {} }) {
   return (
-    <div style={{
-      display: 'flex', alignItems: 'center', gap: 12,
-      margin: '20px 0', ...style,
-    }}>
-      <div style={{ flex: 1, height: '1px', background: '#1f2a38' }} />
-      {label && (
-        <span style={{ color: '#3a4252', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' }}>
-          {label}
-        </span>
-      )}
-      <div style={{ flex: 1, height: '1px', background: '#1f2a38' }} />
+    <div style={{ display:'flex', alignItems:'center', gap:12, margin:'18px 0', ...s }}>
+      <div style={{ flex:1, height:'1px', background:'var(--border)' }} />
+      {label && <span style={{ color:'var(--gold-dim)', fontSize:9, letterSpacing:2, textTransform:'uppercase', fontWeight:700 }}>{label}</span>}
+      <div style={{ flex:1, height:'1px', background:'var(--border)' }} />
     </div>
   )
 }
 
-/* ── StatusPill ──────────────────────────────────────────── */
-export function StatusPill({ online, label }) {
-  const c = online ? '#5a9e6f' : '#9e5a5a'
-  return (
-    <div style={{
-      display: 'inline-flex', alignItems: 'center', gap: 7,
-      padding: '5px 10px', borderRadius: 6,
-      background: online ? '#0d1a1022' : '#1a0d0d22',
-      border: `1px solid ${c}33`, fontSize: 11, color: c,
-    }}>
-      <span style={{
-        width: 6, height: 6, borderRadius: '50%', background: c, flexShrink: 0,
-        animation: online ? 'pulse 2.5s ease infinite' : 'none',
-      }} />
-      {label}
-    </div>
-  )
-}
-
-/* ── Msg ─────────────────────────────────────────────────── */
-export function Msg({ text }) {
+/* ── Msg ──────────────────────────────────────────────────── */
+export function Msg({ text, style: s = {} }) {
   if (!text) return null
   const ok = text.startsWith('✅')
   return (
     <div style={{
-      padding: '8px 12px', borderRadius: 6, fontSize: 11,
-      background: ok ? '#0d1a1033' : '#1a0d0d33',
-      border: `1px solid ${ok ? '#5a9e6f33' : '#9e5a5a33'}`,
-      color: ok ? '#5a9e6f' : '#9e5a5a',
-      marginTop: 10,
+      padding: '8px 12px', borderRadius: 'var(--radius)', fontSize: 11,
+      background: ok ? 'var(--green-bg)' : 'var(--red-bg)',
+      border: `1px solid ${ok ? 'var(--green-b)' : 'var(--red-b)'}`,
+      color: ok ? 'var(--green)' : 'var(--red)',
+      marginTop: 10, ...s,
+    }}>{text}</div>
+  )
+}
+
+/* ── StatCard ─────────────────────────────────────────────── */
+export function StatCard({ label, value, color, icon }) {
+  return (
+    <div style={{
+      background: 'var(--surface)', border: '1px solid var(--border)',
+      borderRadius: 'var(--radius)', padding: '16px 18px',
+      display: 'flex', alignItems: 'center', gap: 14,
     }}>
-      {text}
+      <div style={{
+        width: 38, height: 38, borderRadius: 9, flexShrink: 0,
+        background: (color || 'var(--gold)') + '18',
+        border: `1px solid ${color || 'var(--gold)'}33`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 18,
+      }}>{icon}</div>
+      <div>
+        <div style={{ color: 'var(--text3)', fontSize: 10, letterSpacing:1.2, textTransform:'uppercase', marginBottom:3 }}>{label}</div>
+        <div style={{ color: color || 'var(--gold)', fontFamily:'var(--font-disp)', fontSize:20, fontWeight:800, lineHeight:1 }}>{value}</div>
+      </div>
     </div>
   )
 }
