@@ -1,78 +1,58 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 :root {
-  /* Paleta Zolo */
-  --bg:          #0f1318;
-  --bg-deep:     #080b10;
-  --panel:       #13171e;
-  --panel-2:     #1a1e26;
-  --border:      #252c38;
-  --border-2:    #2a3040;
+  --bg:         #0b0e13;
+  --bg2:        #10141a;
+  --bg3:        #151a22;
+  --panel:      #161c25;
+  --border:     #1f2a38;
+  --border2:    #273344;
 
-  /* Cores de destaque */
-  --gold:        #8C7549;
-  --gold-dark:   #594A2D;
-  --slate:       #313640;
-  --slate-light: #D9D9D9;
+  --gold:       #8C7549;
+  --gold-hi:    #a8915e;
+  --gold-dim:   #594A2D;
+  --gold-faint: #3a3020;
 
-  /* Status */
-  --green:       #7ab87a;
-  --red:         #c07070;
-  --yellow:      #c8a84a;
-  --blue:        #6a8ab8;
+  --slate:      #313640;
+  --slate-hi:   #4a5368;
+  --ash:        #D9D9D9;
+  --ash-dim:    #9aa0aa;
+  --ash-faint:  #505a68;
 
-  /* Texto */
-  --text:        #c8d0da;
-  --text-muted:  #5a6070;
-  --text-faint:  #3a4050;
+  --green:      #5a9e6f;
+  --green-dim:  #2d5a3a;
+  --red:        #9e5a5a;
+  --red-dim:    #5a2d2d;
+  --yellow:     #9e8a4a;
+
+  --font: 'JetBrains Mono', monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { height: 100%; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; }
 
 body {
   background: var(--bg);
-  color: var(--text);
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  min-height: 100vh;
-  height: 100%;
+  color: var(--ash-dim);
+  font-family: var(--font);
+  font-size: 12px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-#root { height: 100%; }
+::selection { background: #594A2D55; color: var(--gold-hi); }
 
-/* Scrollbar */
-::-webkit-scrollbar       { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: var(--bg-deep); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
 
-/* Selection */
-::selection { background: #594A2D44; color: var(--gold); }
+input, select, textarea, button { font-family: var(--font); }
+input:focus, select:focus, textarea:focus { outline: none; }
 
-/* Input focus ring override */
-input:focus, select:focus, textarea:focus {
-  outline: none;
-}
-
-/* Spin animation */
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Pulse animation for live indicators */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-/* Log colors */
-.log-ok    { color: var(--green); }
-.log-warn  { color: var(--yellow); }
-.log-error { color: var(--red); }
-.log-info  { color: var(--gold); }
+@keyframes spin     { to { transform: rotate(360deg); } }
+@keyframes fadeIn   { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes pulse    { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes shimmer  { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+@keyframes scanline { 0% { top: -10%; } 100% { top: 110%; } }
